@@ -1,0 +1,1 @@
+require('./design_patterns_singleton')

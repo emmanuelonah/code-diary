@@ -1,9 +1,15 @@
 /**
- * @deleteIf an array method similar to ruby delete_if
+ * @deleteIf an Array prototype method that deletes an iterated value if the condition is true
  */
-(Array.prototype as Record<string, any>).deleteIf = function deleteIf(
+interface AugmentedArrayPrototype extends Array<unknown> {
+  deleteIf(cb: (v: any) => boolean): Array<unknown>;
+}
+
+(Array.prototype as AugmentedArrayPrototype).deleteIf = function deleteIf(
   conditionCB: (v: unknown) => boolean,
 ) {
+  if ((Array.prototype as AugmentedArrayPrototype).deleteIf) return;
+
   this.forEach((v: unknown, i: number) => {
     if (conditionCB(v)) this.splice(i, 1);
   });
@@ -13,6 +19,6 @@
 
 const a = [1, 2, 3, 4, 5, 4, 5, 10];
 
-a.deleteIf((v: number) => v < 4);
+(a as AugmentedArrayPrototype).deleteIf((v: number) => v < 4);
 
 console.log(a);
